@@ -1,0 +1,74 @@
+<?php
+
+return (object)[
+	// Debug mode (for development only)
+	// Validation of signature and expiration time is always valid
+	// and dns entries are not updated!
+	// Default: false
+
+	'debug' => false,
+
+	// Enable index page?
+	// The index page will show when a visitor tries to access the page with a browser.
+	// It will show the visitors ip address and hostname.
+	// Default: true
+
+	'enableIndex' => true,
+
+	// Show a "Not Found" page when the visitor uses a request method that is not allowed?
+	// A "Not Found" page uses http code 404, a "Method Not Allowed" uses a 405.
+	// This setting will allow you to show a "Not Found" page instead of a "Method Not Allowed"
+	// Default: false (show 404 by default)
+
+	'use405' => false,
+
+	// TransIP API Settings
+	// These settings are available from your TransIP account
+
+	'transip' => (object)[
+
+		// Your TransIP username
+
+		'login' => 'your_transip_username',
+
+		// To have access to the TransIP API you need to create a private key.
+		// Place the generated private key into a file in the config directory.
+		// Enter the name of the file:
+
+		'privateKeyFile' => 'private.key'
+	],
+
+	// Signature key
+	// This key will be used to sign update requests
+	// Both client and server applications need to know this key
+
+	'signatureKey' => 'this.is.an.example.signature.key.change.me',
+
+	// One server instance can update dns entries for multiple client locations.
+	// For example:
+	// 		- A home location
+	//		- A office location
+	//
+	// Each client application needs to identify itself by using a applocation key.
+	// Each application key needs to be unique, and the server should known all the applocation keys
+	// Every client application can trigger an update to multiple dns entries on multiple domainnames!
+	//
+	// Configure all client applications and the dns entries to update below.
+	'applications' => (object)[
+
+		// Example: Home location
+		'application_key_1' => [
+			'example.com' => [
+				'home'
+			]
+		],
+
+		// Example: Office location
+		'application_key_2' => [
+			'example.com' => [
+				'office',
+				'cloud'
+			]
+		]
+	]
+];

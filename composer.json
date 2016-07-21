@@ -1,0 +1,55 @@
+{
+    "name": "cyberjack/transip-ddns",
+    "description": "Update DNS records using the TransIP API, on ip address changes.",
+    "homepage": "https://github.com/cyberjack/transip-ddns",
+    "keywords": ["php", "api", "transip", "dns", "ddns"],
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Peter Bottenberg",
+            "email": "cyberjack77@gmail.com",
+            "role": "Project developer"
+        },
+        {
+            "name": "TransIP B.V.",
+            "email": "support@transip.nl",
+            "role": "Source files"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.20",
+        "ext-pdo_sqlite": "*",
+        "ext-soap": "*",
+        "ext-openssl": "*",
+        "transip/transip": "5.2.0",
+        "nikic/fast-route": "^1.0",
+        "phpunit/php-text-template": "^1.2"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "transip/transip",
+                "version": "5.2.0",
+                "dist": {
+                    "url": "https://api.transip.nl/downloads/transapi_transip.nl_v5_2.tar.gz",
+                    "type": "tar"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CyberJack\\Transip\\": "src/"
+        },
+        "classmap": [
+            "vendor/transip/transip/Transip/"
+        ]
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "php -r \"copy('app/config/config.php.example', 'app/config/config.php');\""
+        ]
+    }
+}

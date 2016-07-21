@@ -1,0 +1,11 @@
+.container {
+    font-family: verdana;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.container label {
+    display: inline-block;
+    font-weight: bold;
+    width: 80px;
+}

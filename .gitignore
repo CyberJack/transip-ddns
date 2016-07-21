@@ -1,0 +1,12 @@
+### PhpStorm ###
+/.idea/
+
+### Composer ###
+composer.phar
+/vendor/
+
+# Application configuration
+/app/data/*
+!app/data/.gitkeep
+/app/config/*
+!app/config/config.php.example
