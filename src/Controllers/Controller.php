@@ -2,7 +2,7 @@
 
 namespace CyberJack\Transip\Controllers;
 
-use CyberJack\Transip\Config;
+use Pimple\Container;
 
 /**
  * Class Controller
@@ -12,15 +12,17 @@ use CyberJack\Transip\Config;
 abstract class Controller
 {
 	/**
-	 * @var Config
+	 * @var Container
 	 */
-	protected $config;
+	protected $container;
 
 	/**
 	 * Controller constructor.
+	 *
+	 * @param Container $container
 	 */
-	public function __construct()
+	public function __construct(Container $container)
 	{
-		$this->config = Config::getInstance();
+		$this->container = $container;
 	}
 }

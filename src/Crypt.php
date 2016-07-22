@@ -2,6 +2,11 @@
 
 namespace CyberJack\Transip;
 
+/**
+ * Class Crypt
+ *
+ * @package CyberJack\Transip
+ */
 class Crypt
 {
 	/**

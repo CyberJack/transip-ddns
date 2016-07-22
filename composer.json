@@ -24,7 +24,11 @@
         "ext-openssl": "*",
         "transip/transip": "5.2.0",
         "nikic/fast-route": "^1.0",
-        "phpunit/php-text-template": "^1.2"
+        "phpunit/php-text-template": "^1.2",
+        "pimple/pimple": "^3.0"
+    },
+    "require-dev": {
+        "jbzoo/pimpledumper": "^1.2"
     },
     "repositories": [
         {

@@ -10,33 +10,14 @@ use DateTime;
  *
  * @package CyberJack\Transip
  */
-class Database
+class Database implements DatabaseInterface
 {
-	/**
-	 * @var Database
-	 */
-	private static $instance;
-
 	/**
 	 * The SQLite database connection
 	 *
 	 * @var PDO
 	 */
 	protected $db = null;
-
-	/**
-	 * Get the application configuration
-	 *
-	 * @return Database
-	 */
-	public static function getInstance()
-	{
-		if (null === static::$instance)
-		{
-			static::$instance = new static();
-		}
-		return static::$instance;
-	}
 
 	/**
 	 * Database constructor.
@@ -51,24 +32,6 @@ class Database
 
 		// Init
 		$this->createTables();
-	}
-
-	/**
-	 * Private clone method to prevent cloning of the instance of the Database instance.
-	 *
-	 * @return void
-	 */
-	private function __clone()
-	{
-	}
-
-	/**
-	 * Private unserialize method to prevent unserializing of the Database instance.
-	 *
-	 * @return void
-	 */
-	private function __wakeup()
-	{
 	}
 
 	/**
@@ -171,4 +134,3 @@ class Database
 		$this->db->commit();
 	}
 }
-

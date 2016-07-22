@@ -18,9 +18,9 @@ return (object)[
 	// Show a "Not Found" page when the visitor uses a request method that is not allowed?
 	// A "Not Found" page uses http code 404, a "Method Not Allowed" uses a 405.
 	// This setting will allow you to show a "Not Found" page instead of a "Method Not Allowed"
-	// Default: false (show 404 by default)
+	// Default: true (show 404 by default)
 
-	'use405' => false,
+	'show404' => true,
 
 	// TransIP API Settings
 	// These settings are available from your TransIP account

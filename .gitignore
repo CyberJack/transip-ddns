@@ -1,5 +1,6 @@
 ### PhpStorm ###
 /.idea/
+.phpstorm.meta.php
 
 ### Composer ###
 composer.phar

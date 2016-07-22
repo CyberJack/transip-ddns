@@ -3,7 +3,7 @@
 namespace CyberJack\Transip;
 
 use Exception;
-use FastRoute\Dispatcher\GroupCountBased;
+use Pimple\Container;
 use Text_Template;
 
 /**
@@ -14,26 +14,19 @@ use Text_Template;
 class Application
 {
 	/**
-	 * @var array
+	 * @var Container
 	 */
-	protected $config;
-
-	/**
-	 * @var GroupCountBased
-	 */
-	protected $dispatcher;
+	protected $container;
 
 
 	/**
 	 * Application constructor.
 	 *
-	 * @param GroupCountBased $dispatcher
-	 * @param Config $config
+	 * @param Container $container
 	 */
-	public function __construct(GroupCountBased $dispatcher, Config $config)
+	public function __construct(Container $container)
 	{
-		$this->config = $config;
-		$this->dispatcher = $dispatcher;
+		$this->container = $container;
 	}
 
 	/**
@@ -52,7 +45,7 @@ class Application
 
 		$httpMethod = $_SERVER['REQUEST_METHOD'];
 		$uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-		$routeInfo = $this->dispatcher->dispatch($httpMethod, $uri);
+		$routeInfo = $this->container['dispatcher']->dispatch($httpMethod, $uri);
 
 		switch ($routeInfo[0])
 		{
@@ -62,7 +55,7 @@ class Application
 				break;
 
 			case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-				$template = sprintf(APP_DIR . '/views/%s.html', $this->config->use405 === true ? '405' : '404');
+				$template = sprintf(APP_DIR . '/views/%s.html', $this->container['config']->show404 === true ? '404' : '405');
 				echo (new Text_Template($template))->render();
 				$allowedMethods = $routeInfo[1];
 				// ... 405 Method Not Allowed
@@ -79,7 +72,7 @@ class Application
 
 				if(is_array($handler))
 				{
-					$class = new $handler[0]();
+					$class = new $handler[0]($this->container);
 					$class->{$handler[1]}($vars);
 				}
 				break;

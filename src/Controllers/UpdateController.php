@@ -2,13 +2,11 @@
 
 namespace CyberJack\Transip\Controllers;
 
-use Exception;
 use DateTime;
-
+use Exception;
+use stdClass;
 use Transip_DnsEntry;
-
 use CyberJack\Transip\Crypt;
-use CyberJack\Transip\Database;
 use CyberJack\Transip\Ip;
 use CyberJack\Transip\Transip\DomainService;
 
@@ -20,20 +18,14 @@ use CyberJack\Transip\Transip\DomainService;
 class UpdateController extends Controller
 {
 	/**
-	 * @var Database
-	 */
-	protected $db;
-
-
-	/**
 	 * Update the DNS entry(s)
 	 *
 	 * Request = $_POST[
 	 *     'signature' => '.....',
-	 *       'request' => json_encode((object)[
-	 *           'applicationKey' => '....',
-	 *           'time' => 'yyyy-mm-dd hh:ii:ss.u"
-	 *     ])
+	 *     'request'   => (json object){
+	 * 			'applicationKey' => '....',
+	 * 			'time'           => 'yyyy-mm-dd hh:ii:ss.u'
+	 * 	   }
 	 * ]
 	 */
 	public function update()
@@ -41,16 +33,15 @@ class UpdateController extends Controller
 		try
 		{
 			$request = $this->getRequestData();
-			$force = $this->config->debug | isset($request->force) ? true : false;
-			$this->db = Database::getInstance();
+			$force = $this->container['config']->debug | isset($request->force) ? true : false;
 
-			$lastIp = $this->db->getLastIp($request->applicationKey);
+			$lastIp = $this->container['database']->getLastIp($request->applicationKey);
 			$ip = Ip::get();
 
-			if ($force | !$lastIp | $lastIp !== $ip)
+			if ($force || !$lastIp || $lastIp !== $ip)
 			{
-				$this->db->updateIp($request->applicationKey, $ip);
-				$config = $this->config->applications->{$request->applicationKey};
+				$this->container['database']->updateIp($request->applicationKey, $ip);
+				$config = $this->container['config']->applications->{$request->applicationKey};
 				foreach ($config as $domain => $dnsRecords)
 				{
 					$this->updateDnsRecords($request->applicationKey, $domain, $dnsRecords, $ip);
@@ -81,9 +72,9 @@ class UpdateController extends Controller
 		$signature = $_POST['signature'];
 		$request = json_decode($_POST['request']);
 
-		if (!isset($request->applicationKey, $request->time) || !$this->validateRequestSignature(
-				$request, $signature
-			) || !$this->validateExpirationTime($request)
+		if (!isset($request->applicationKey, $request->time, $this->container['config']->applications->{$request->applicationKey}) ||
+			!$this->validateRequestSignature($request, $signature) ||
+			!$this->validateExpirationTime($request)
 		)
 		{
 			// @todo: Log data
@@ -104,9 +95,9 @@ class UpdateController extends Controller
 	protected function validateRequestSignature($request, $signature)
 	{
 		$requestSignature = base64_encode(
-			hash_hmac('sha256', json_encode($request), $this->config->signatureKey, true)
+			hash_hmac('sha256', json_encode($request), $this->container['config']->signatureKey, true)
 		);
-		return $this->config->debug | Crypt::compareStrings($requestSignature, $signature);
+		return $this->container['config']->debug | Crypt::compareStrings($requestSignature, $signature);
 	}
 
 	/**
@@ -122,7 +113,7 @@ class UpdateController extends Controller
 			DateTime::createFromFormat('Y-m-d H:i:s.u', $request->time)->getTimestamp() -
 			(new DateTime())->getTimestamp()
 		) / 60;
-		if ($this->config->debug === false & $diff > 1)
+		if ($this->container['config']->debug === false & $diff > 1)
 		{
 			throw new Exception('Update request expired!');
 		}
@@ -148,7 +139,7 @@ class UpdateController extends Controller
 		foreach ($dnsEntries as $dnsEntry)
 		{
 			// Check if the entry has to be updated and update it
-			if (in_array($dnsEntry->name, $dnsRecords))
+			if (in_array($dnsEntry->name, $dnsRecords, true))
 			{
 				$dnsEntry->type = Transip_DnsEntry::TYPE_A;
 				$dnsEntry->content = $ip;
@@ -156,10 +147,10 @@ class UpdateController extends Controller
 		}
 
 		// Send the changes to TransIP
-		if (!$this->config->debug)
+		if (!$this->container['config']->debug)
 		{
-			Transip_DomainService::setDnsEntries($domain, $dnsEntries);
-			$this->db->updateDomainLog($applicationKey, $domain, $dnsRecords);
+			DomainService::setDnsEntries($domain, $dnsEntries);
+			$this->container['database']->updateDomainLog($applicationKey, $domain, $dnsRecords);
 		}
 	}
 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dbfe90104f4b89411603c7a40fa4061d",
-    "content-hash": "b0bf02116a75adbc16ad1c3220444b8d",
+    "hash": "a2a855c06267ffdfd35a4bc19ed0b767",
+    "content-hash": "34912e27ac6a155ce891642e803f4f49",
     "packages": [
         {
             "name": "nikic/fast-route",
@@ -92,6 +92,52 @@
             "time": "2015-06-21 13:50:34"
         },
         {
+            "name": "pimple/pimple",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silexphp/Pimple.git",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Pimple": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Pimple, a simple Dependency Injection Container",
+            "homepage": "http://pimple.sensiolabs.org",
+            "keywords": [
+                "container",
+                "dependency injection"
+            ],
+            "time": "2015-09-11 15:10:35"
+        },
+        {
             "name": "transip/transip",
             "version": "5.2.0",
             "dist": {
@@ -103,7 +149,64 @@
             "type": "library"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "jbzoo/pimpledumper",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JBZoo/PimpleDumper.git",
+                "reference": "44fad95411373b7e411beedc0ee9c3fa5b82b205"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JBZoo/PimpleDumper/zipball/44fad95411373b7e411beedc0ee9c3fa5b82b205",
+                "reference": "44fad95411373b7e411beedc0ee9c3fa5b82b205",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10",
+                "pimple/pimple": "^3.0"
+            },
+            "require-dev": {
+                "jbzoo/phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JBZoo\\PimpleDumper\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SmetDenis",
+                    "email": "denis@jbzoo.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "Easy way to auto create pimple.json and .phpstorm.meta.php for Pimple Container",
+            "keywords": [
+                "ArrayAccess",
+                "autocomplete",
+                "container",
+                "di",
+                "idea",
+                "phpstorm",
+                "pimple",
+                "silex"
+            ],
+            "time": "2016-06-30 10:34:40"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

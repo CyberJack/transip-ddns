@@ -6,52 +6,44 @@ if(!defined('APP_DIR'))
 }
 
 define('VENDOR_DIR', __DIR__ . '/../vendor');
-require_once(APP_DIR . '/../vendor/autoload.php');
+require_once(VENDOR_DIR . '/autoload.php');
 
-use CyberJack\Transip\Config;
 use CyberJack\Transip\Application;
-use FastRoute;
+use CyberJack\Transip\Config;
+use CyberJack\Transip\Database;
 use FastRoute\RouteCollector;
-use FastRoute\Dispatcher\GroupCountBased;
+use Pimple\Container;
 
-if (!function_exists('hash_equals'))
-{
-	function hash_equals($str1, $str2)
-	{
-		if (strlen($str1) != strlen($str2))
-		{
-			return false;
-		}
-		else
-		{
-			$res = $str1 ^ $str2;
-			$ret = 0;
-			for ($i = strlen($res) - 1; $i >= 0; $i--)
-				$ret |= ord($res[$i]);
-			return !$ret;
-		}
-	}
-}
+$container = new Container();
 
 // Load the application configuration
-$config = Config::getInstance();
+$container['config'] = function() {
+	return new Config();
+};
 
 // Determine the routes
-$dispatcher = FastRoute\simpleDispatcher(
-	function (RouteCollector $r) use ($config)
-	{
-		if ($config->enableIndex === true)
-		{
-			$r->addRoute('GET', '/', [\CyberJack\Transip\Controllers\IndexController::class, 'index']);
+$container['dispatcher'] = function($c) {
+	return FastRoute\simpleDispatcher(
+		function (RouteCollector $r) use ($c){
+			$config = $c['config'];
+			if ($config->enableIndex === true)
+			{
+				$r->addRoute('GET', '/', [\CyberJack\Transip\Controllers\IndexController::class, 'index']);
+			}
+			$r->addRoute('POST', '/', [\CyberJack\Transip\Controllers\UpdateController::class, 'update']);
 		}
-		$r->addRoute('POST', '/', [\CyberJack\Transip\Controllers\UpdateController::class, 'update']);
-	}
-);
+	);
+};
+
+// Initialize the database connection
+$container['database'] = function() {
+	return new Database();
+};
 
 // Start the application
 try
 {
-	$app = new Application($dispatcher, $config);
+	$app = new Application($container);
 }
 catch (Exception $e)
 {
