@@ -1,6 +1,6 @@
 <?php
 
-return (object)[
+return [
 	// Debug mode (for development only)
 	// Validation of signature and expiration time is always valid
 	// and dns entries are not updated!
@@ -25,7 +25,7 @@ return (object)[
 	// TransIP API Settings
 	// These settings are available from your TransIP account
 
-	'transip' => (object)[
+	'transip' => [
 
 		// Your TransIP username
 
@@ -54,7 +54,7 @@ return (object)[
 	// Every client application can trigger an update to multiple dns entries on multiple domainnames!
 	//
 	// Configure all client applications and the dns entries to update below.
-	'applications' => (object)[
+	'applications' => [
 
 		// Example: Home location
 		'application_key_1' => [

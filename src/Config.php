@@ -27,16 +27,43 @@ class Config
 		{
 			throw new Exception('Config file "config.php" does not exist in the app config directory!');
 		}
-		$this->config = include APP_DIR . '/config/config.php';
-		$this->validate();
+		$this->load();
+	}
+
+	/**
+	 * Load the configuration
+	 *
+	 * @return void
+	 */
+	protected function load()
+	{
+		$config = include APP_DIR . '/config/config.php';
+		$this->validate($config);
+
+		// Convert the config to an object
+		$this->config = (object)$config;
+
+		// Load the TransIP private key
+		$this->config->transip = (object)$config['transip'];
+		$this->config->transip->privateKey = trim(file_get_contents(APP_DIR . '/config/'. $config['transip']['privateKeyFile']));
+
+		// convert all client applications to objects
+		$this->config->applications = new stdClass();
+		foreach($config['applications'] as $key => $application)
+		{
+			$this->config->applications->{$key} = (object)$application;
+		}
+
+		var_dump($this->config);
 	}
 
 	/**
 	 * Validate the configuration
 	 *
+	 * @param array $config
 	 * @return bool
 	 */
-	protected function validate()
+	protected function validate($config)
 	{
 		// @todo: Validate the configuration!
 	}

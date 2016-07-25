@@ -38,7 +38,7 @@ class Application
 	public function run()
 	{
 		// Fetch method and URI from somewhere
-		if (php_sapi_name() === "cli")
+		if (php_sapi_name() === 'cli')
 		{
 			throw new Exception('Only web mode, no cli!');
 		}
