@@ -53,8 +53,6 @@ class Config
 		{
 			$this->config->applications->{$key} = (object)$application;
 		}
-
-		var_dump($this->config);
 	}
 
 	/**
