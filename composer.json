@@ -22,38 +22,22 @@
         "ext-pdo_sqlite": "*",
         "ext-soap": "*",
         "ext-openssl": "*",
-        "transip/transip": "5.2.0",
         "nikic/fast-route": "^1.0",
         "phpunit/php-text-template": "^1.2",
-        "pimple/pimple": "^3.0"
+        "pimple/pimple": "^3.0",
+        "hiddeco/transip": "^5.3"
     },
     "require-dev": {
         "jbzoo/pimpledumper": "^1.2"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "transip/transip",
-                "version": "5.2.0",
-                "dist": {
-                    "url": "https://api.transip.nl/downloads/transapi_transip.nl_v5_2.tar.gz",
-                    "type": "tar"
-                }
-            }
-        }
-    ],
     "autoload": {
         "psr-4": {
             "CyberJack\\Transip\\": "src/"
-        },
-        "classmap": [
-            "vendor/transip/transip/Transip/"
-        ]
+        }
     },
     "scripts": {
         "post-root-package-install": [
-            "php -r \"copy('app/config/config.php.example', 'app/config/config.php');\""
+            "php app/bin/installer.php"
         ]
     }
 }

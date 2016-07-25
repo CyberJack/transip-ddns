@@ -5,10 +5,10 @@ namespace CyberJack\Transip\Controllers;
 use DateTime;
 use Exception;
 use stdClass;
-use Transip_DnsEntry;
 use CyberJack\Transip\Crypt;
 use CyberJack\Transip\Ip;
-use CyberJack\Transip\Transip\DomainService;
+use TransIP\Client;
+use TransIP\Model\DnsEntry;
 
 /**
  * Class PostController
@@ -66,7 +66,7 @@ class UpdateController extends Controller
 		if (!$_POST || !isset($_POST['request'], $_POST['signature']))
 		{
 			// @todo: Log data
-			throw new Exception("Unable to fetch update request from POST data!");
+			throw new Exception('Unable to fetch update request from POST data!');
 		}
 
 		$signature = $_POST['signature'];
@@ -78,7 +78,7 @@ class UpdateController extends Controller
 		)
 		{
 			// @todo: Log data
-			throw new Exception("Invalid update request!");
+			throw new Exception('Invalid update request!');
 		}
 
 		return $request;
@@ -132,16 +132,20 @@ class UpdateController extends Controller
 	protected function updateDnsRecords($applicationKey, $domain, $dnsRecords, $ip)
 	{
 		// Get the current DNS entries
-		$dnsEntries = DomainService::getInfo($domain)->dnsEntries;
+		$client = new Client(
+			$this->container['config']->transip->login,
+			$this->container['config']->transip->privateKey
+		);
+		$domainApi = $client->api('domain');
+		$dnsEntries = $domainApi->getInfo($domain)->dnsEntries;
 
 		// Update the dns records
-		/** @var Transip_DnsEntry $dnsEntry */
 		foreach ($dnsEntries as $dnsEntry)
 		{
 			// Check if the entry has to be updated and update it
 			if (in_array($dnsEntry->name, $dnsRecords, true))
 			{
-				$dnsEntry->type = Transip_DnsEntry::TYPE_A;
+				$dnsEntry->type = DnsEntry::TYPE_A;
 				$dnsEntry->content = $ip;
 			}
 		}
@@ -149,7 +153,7 @@ class UpdateController extends Controller
 		// Send the changes to TransIP
 		if (!$this->container['config']->debug)
 		{
-			DomainService::setDnsEntries($domain, $dnsEntries);
+			$domainApi->setDnsEntries($domain, $dnsEntries);
 			$this->container['database']->updateDomainLog($applicationKey, $domain, $dnsRecords);
 		}
 	}

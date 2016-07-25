@@ -4,9 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a2a855c06267ffdfd35a4bc19ed0b767",
-    "content-hash": "34912e27ac6a155ce891642e803f4f49",
+    "hash": "f2692a7295edf742ce78387900eb08d6",
+    "content-hash": "afa06199296012083944f66d39b54ff4",
     "packages": [
+        {
+            "name": "hiddeco/transip",
+            "version": "v5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hiddeco/transip.git",
+                "reference": "5646a95b27bb6c63c67ec75196e7b5fab2c2dd75"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hiddeco/transip/zipball/5646a95b27bb6c63c67ec75196e7b5fab2c2dd75",
+                "reference": "5646a95b27bb6c63c67ec75196e7b5fab2c2dd75",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TransIP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hidde Beydals",
+                    "email": "hello@hidde.co",
+                    "homepage": "https://github.com/hiddeco"
+                }
+            ],
+            "description": "The better TransIP API client.",
+            "keywords": [
+                "api",
+                "php",
+                "soap",
+                "transip"
+            ],
+            "time": "2016-03-24 14:53:30"
+        },
         {
             "name": "nikic/fast-route",
             "version": "v1.0.1",
@@ -136,17 +183,6 @@
                 "dependency injection"
             ],
             "time": "2015-09-11 15:10:35"
-        },
-        {
-            "name": "transip/transip",
-            "version": "5.2.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://api.transip.nl/downloads/transapi_transip.nl_v5_2.tar.gz",
-                "reference": null,
-                "shasum": null
-            },
-            "type": "library"
         }
     ],
     "packages-dev": [
